@@ -1,0 +1,94 @@
+#!/usr/bin/python
+from tweepy import Stream
+from tweepy import OAuthHandler
+from tweepy.streaming import StreamListener
+import json
+import time
+import configparser
+import signal
+import sys
+
+ckey = ''
+csecret = ''
+atoken = ''
+asecret = ''
+
+dumplocation = ''
+dumpfilename = ''
+loglocation=''
+
+class listener(StreamListener):
+    def __init__(self):
+	self.fh = open(dumplocation+"/"+dumpfilename,'a')
+	self.lh = open(loglocation+"/"+dumpfilename+".log",'a')
+
+    def on_data(self, data):
+	global dumpfilename,count,prevmin
+	try:
+		try:
+			tweet = json.loads(data)
+			delete = tweet["delete"]
+		except KeyError: # We collect only those tweets which are not delete
+			self.fh.write(data);
+			year = time.strftime("%Y");
+			month = time.strftime("%m");
+			day = time.strftime("%d");
+			filename = str(year)+str(month)+str(day)+".json";
+
+			if filename!=dumpfilename:
+				dumpfilename = filename
+				self.fh.close()
+				self.lh.close()
+				self.fh = open(dumplocation+"/"+dumpfilename,'a')
+				self.lh = open(loglocation+"/"+dumpfilename+".log",'a')
+				self.lh.write("[" + time.strftime('%Y-%m-%d %H:%M:%S') + "][INFO] Generating New Tweet File " + filename + "\n")
+	except Exception, e:
+		self.lh.write('[' + time.strftime('%Y-%m-%d %H:%M:%S') + '][ERROR] Failed ondata,'+str(e)+"\n")
+		time.sleep(5)
+
+    def on_error(self, status):
+        self.lh.write('[' + time.strftime('%Y-%m-%d %H:%M:%S') + '][ERROR] '+status+"\n")
+
+    def close(self):
+		try:
+			self.fh.close()
+			self.lh.close()
+		except:
+			#Log/email
+			pass
+
+def init():
+	global ckey, csecret, atoken, asecret, dumplocation, loglocation, dumpfilename
+	config = configparser.ConfigParser()	
+	config.read('/home/sabanerjee/twitterspider/Config')
+	ckey = config['TOKENS']['CONSUMER_KEY']
+	csecret = config['TOKENS']['CONSUMER_SECRET']
+	atoken = config['TOKENS']['AUTHORIZATION_TOKEN']
+	asecret = config['TOKENS']['AUTHORIZATION_SECRET']
+	dumplocation = config['PARAMETERS']['DUMP_LOCATION']
+	loglocation = config['PARAMETERS']['LOG_LOCATION']
+	year = time.strftime("%Y")
+	month = time.strftime("%m")
+	day = time.strftime("%d")
+	dumpfilename = str(year)+str(month)+str(day)+".json"
+	logfile = open(loglocation+"/"+dumpfilename+".log",'a')
+	logfile.write('[' + time.strftime('%Y-%m-%d %H:%M:%S') + '][INFO]Streaming Started.\n')
+	logfile.close()
+
+def fetchsamples():
+	try:
+		init()
+		auth = OAuthHandler(ckey, csecret)
+		auth.set_access_token(atoken, asecret)
+		listener1 = listener()
+		twitterStream = Stream(auth, listener1)
+		twitterStream.sample()
+	except KeyboardInterrupt:
+		logfile = open(loglocation+"/"+dumpfilename+".log",'a')
+		logfile.write('[' + time.strftime('%Y-%m-%d %H:%M:%S') + '][ERROR] Keyboard Interrupt received. Exiting.\n')
+		logfile.close()
+		listener1.close()
+		twitterStream.disconnect()
+
+if __name__ == '__main__':
+    fetchsamples()

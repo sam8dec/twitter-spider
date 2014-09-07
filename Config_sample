@@ -1,0 +1,9 @@
+[TOKENS]
+CONSUMER_KEY = 
+CONSUMER_SECRET = 
+AUTHORIZATION_TOKEN = 
+AUTHORIZATION_SECRET = 
+
+[PARAMETERS]
+DUMP_LOCATION = /home/sabanerjee/DSL/twitter/dumps/
+LOG_LOCATION = /home/sabanerjee/DSL/twitter/dumps/logs/
