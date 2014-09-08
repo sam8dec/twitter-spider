@@ -33,7 +33,7 @@ sudo pip install configparser
 
 ###Updating the Configuration
 
-1. Update the keys, CONSUMER_KEY, CONSUMER_SECRET, AUTHORIZATION_TOKEN, AUTHORIZATION_SECRET in **Config_sample** with the info you received in the previous steps. **Do not enclose the values in quotes**.
+1. Update the keys, API_KEY, API_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET in **Config_sample** with the info you received in the previous steps. **Do not enclose the values in quotes**.
 2. Create a folder of your choice to dump the tweets. Files (1 per day) will be generated in that folder. Enter the full path in DUMP_LOCATION.
 3. Create a folder of your choice to dump logs. Files (1 per day) will be generated in that folder. Enter the full path in LOG_LOCATION.
 4. Your thus updated file should look something like:

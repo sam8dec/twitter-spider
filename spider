@@ -61,10 +61,10 @@ def init():
 	global ckey, csecret, atoken, asecret, dumplocation, loglocation, dumpfilename
 	config = configparser.ConfigParser()	
 	config.read('/home/sabanerjee/twitterspider/Config')
-	ckey = config['TOKENS']['CONSUMER_KEY']
-	csecret = config['TOKENS']['CONSUMER_SECRET']
-	atoken = config['TOKENS']['AUTHORIZATION_TOKEN']
-	asecret = config['TOKENS']['AUTHORIZATION_SECRET']
+	ckey = config['TOKENS']['API_KEY']
+	csecret = config['TOKENS']['API_SECRET']
+	atoken = config['TOKENS']['ACCESS_TOKEN']
+	asecret = config['TOKENS']['ACCESS_TOKEN_SECRET']
 	dumplocation = config['PARAMETERS']['DUMP_LOCATION']
 	loglocation = config['PARAMETERS']['LOG_LOCATION']
 	year = time.strftime("%Y")
