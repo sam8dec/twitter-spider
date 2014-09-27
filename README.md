@@ -62,3 +62,17 @@ Now you are good to start the spider as a user process. Just execute **./spider*
 5. Play around with the service - check the logs, try killing it and see if it restarts.
 6. To stop the service:<br><code>sudo service twitterspider stop</code>
 
+###Loading tweets to Hadoop DFS
+
+The script loadDumpToHDFS.sh loads a tweet dump to HDFS. To use it, open the script in your favorite editor and alter the HADOOP_HOME, JAVA_HOME and LOCAL_DUMP_LOC environment variables appropriately. The default folder location used is **Twitter** under the current hadoop user's directory. You can change it by changing the variable, **dumploc**. There are two ways to run the script:
+
+**1. Without any arguments:** The script would in this case look for the previous day's dump and copy it to HDFS and after that delete the local dump.
+**2. With date in YYYYMMDD format:** The script will copy the dump of the specified date to HDFS and thereafter delete it. 
+
+You can also schedule a cron job to load the dumps to HDFS every day as tweets get collected. One way to do this is add the following entry to **crontab**:
+
+```
+	30 0  * * *   /scratch2/hadoop/Twitter/dumps/loadDumpToHDFS.sh >> /scratch2/hadoop/Twitter/dumps/logs/hdfsdump.log 2>&1
+```
+This example is from my machine where the script is in the same location as the dump and I log the output of the script too.
+
