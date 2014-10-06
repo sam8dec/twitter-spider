@@ -76,3 +76,16 @@ You can also schedule a cron job to load the dumps to HDFS every day as tweets g
 ```
 This example is from my machine where the script is in the same location as the dump and I log the output of the script too.
 
+###Counting the number of tweets
+
+Often it is required that you know the number of tweets collected on a particular day (to find mentions of entities per million, etc). The script linecount.sh does that for you. You need to specify the day in YYYYMMDD format as an argument. By default it takes the previous day. The way to run it is:
+
+```
+	./linecount.sh 20140930
+```
+OR
+```
+	./linecount.sh
+```
+The latter processes yesterday's tweets.
+
