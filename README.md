@@ -5,7 +5,7 @@ Twitter data collection with [Tweepy](http://www.github.com/tweepy/tweepy) in Py
 Key Features:
 - Includes support for starting the spider as an Ubuntu service.
 - Spawned during system startup and respawned in the event of a kill.
-- Generates JSON tweets on a daily basis in files, &lt;YYYYMMDD&gt;.json
+- Generates JSON tweets on a daily basis in files, &lt;YYYYMMDD&gt;.json **(Note that only a subset of the fields are dumped)**
 - Logs info and error in &lt;YYYYMMDD&gt;.json.log
 
 ###Required Python libraries

@@ -25,11 +25,51 @@ class listener(StreamListener):
     def on_data(self, data):
 	global dumpfilename,count,prevmin
 	try:
+		tweet=None
 		try:
 			tweet = json.loads(data)
 			delete = tweet["delete"]
 		except KeyError: # We collect only those tweets which are not delete
-			self.fh.write(data);
+			tweet_out = {}
+			tweet_out["id"] = str(tweet["id"])
+			tweet_out["text"] = tweet["text"]
+			tweet_out["created_at"] = tweet["created_at"]
+			tweet_out["lang"] = tweet["lang"]
+			PLACE_JSON = tweet["place"]
+			tweet_out["country_code"]='NULL'
+			tweet_out["full_name"]='NULL'
+			tweet_out["coordinates"]='NULL'
+			try:
+				tweet_out["country_code"] = PLACE_JSON["country_code"]
+				if tweet_out["country_code"] is None:
+					tweet_out["country_code"] = 'NULL'
+				tweet_out["full_name"] = PLACE_JSON["full_name"]
+				if tweet_out["full_name"] is None:
+					tweet_out["full_name"] = 'NULL'
+				tweet_out["coordinates"] = str(tweet["coordinates"]["coordinates"]) #Longitude followed by latitude
+				if tweet_out["coordinates"] is None:
+					tweet_out["coordinates"]='NULL'
+			except TypeError:
+				# Do Nothing
+				tweet_out["coordinates"] = 'NULL'
+			USER_JSON = tweet["user"]
+			tweet_out["user_id"]='NULL'
+			tweet_out["user_location"]='NULL'
+			tweet_out["user_timezone"]='NULL'
+			try:
+				tweet_out["user_id"]= str(USER_JSON["id"])
+				if tweet_out["user_id"] is None:
+					tweet_out["user_id"]='NULL'
+				tweet_out["user_location"] = USER_JSON["location"]
+				if tweet_out["user_location"] is None:
+					tweet_out["user_location"]='NULL'
+				tweet_out["user_timezone"] = USER_JSON["time_zone"]
+				if tweet_out["user_timezone"] is None:
+					tweet_out["user_timezone"]='NULL'
+			except TypeError:
+				#Do Nothing
+				tweet_out["user_id"]='NULL'
+			self.fh.write(str(json.dumps(tweet_out))+"\n");
 			year = time.strftime("%Y");
 			month = time.strftime("%m");
 			day = time.strftime("%d");
@@ -60,7 +100,7 @@ class listener(StreamListener):
 def init():
 	global ckey, csecret, atoken, asecret, dumplocation, loglocation, dumpfilename
 	config = configparser.ConfigParser()	
-	config.read('/home/sabanerjee/twitterspider/Config')
+	config.read('/home/sabanerjee/DSL/twitter/SPIDER/twitter-spider/Config')
 	ckey = config['TOKENS']['API_KEY']
 	csecret = config['TOKENS']['API_SECRET']
 	atoken = config['TOKENS']['ACCESS_TOKEN']
