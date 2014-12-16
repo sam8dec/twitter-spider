@@ -56,7 +56,7 @@ Now you are good to start the spider as a user process. Just execute **./spider*
 ###Creating the Ubuntu Service
 
 1. You must have root access to execute the steps below.
-2. Copy **twitterspider.conf** to /etc/init/.<br><code>sudo cp twitterspider.conf /etc/init </code>
+2. If required, change the user name in **twitterspider.conf** from the default **'hadoop'** to one who is authorized to run the spider. Copy **twitterspider.conf** to /etc/init/.<br><code>sudo cp twitterspider.conf /etc/init </code>
 3. Copy **spider** to /usr/bin/.<br><code>sudo cp spider /usr/bin/</code>
 4. Start the service:<br><code>sudo service twitterspider start</code> and BOOM!
 5. Play around with the service - check the logs, try killing it and see if it restarts.
