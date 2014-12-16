@@ -100,7 +100,7 @@ class listener(StreamListener):
 def init():
 	global ckey, csecret, atoken, asecret, dumplocation, loglocation, dumpfilename
 	config = configparser.ConfigParser()	
-	config.read('/scratch/hadoop/twitter-spider/Config')
+	config.read('/scratch2/hadoop/Twitter/twitter-spider/Config')
 	ckey = config['TOKENS']['API_KEY']
 	csecret = config['TOKENS']['API_SECRET']
 	atoken = config['TOKENS']['ACCESS_TOKEN']
