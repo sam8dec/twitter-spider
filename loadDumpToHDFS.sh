@@ -32,6 +32,7 @@ echo "Now putting $LOCAL_DUMP_LOC/$dumpdate.json to HDFS"
 $HADOOP_HOME/bin/hadoop fs -put $LOCAL_DUMP_LOC'/'$dumpdate.json $dumploc'/'$dumpdate'/'
 echo "Now counting number of tweets"
 lines=`wc -l $LOCAL_DUMP_LOC'/'$dumpdate.json | awk '{print $1;}'`
+# Store the count in an HBase Table
 echo "put 'andy_tweetcounts','$dumpdate','tweetcount:ALL','$lines'" | $HBASE_HOME/bin/hbase shell
 echo "Deleting $LOCAL_DUMP_LOC/$dumpdate.json from disk"
 rm $LOCAL_DUMP_LOC'/'$dumpdate.json
